@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/home_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,20 +13,64 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomeProvider? providerR;
+  HomeProvider? providerW;
+
   @override
   Widget build(BuildContext context) {
+    providerR = context.read<HomeProvider>();
+    providerW = context.watch<HomeProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Contact App"),
+        title: const Text("Contact App"),
       ),
       body: Column(
-        children: [],
+        children: [
+          // const Text("hello"),
+          // ListTile(
+          //
+          //    leading: CircleAvatar(),
+          //   title: Text(
+          //     "Hello",
+          //     style: TextStyle(color: Colors.red,fontSize: 25),
+          //   ),
+          // ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: providerW!.contactList.length,
+              itemBuilder: (context, index) {
+                // return Text("Hello World");
+                return Column(
+                  children: [
+                    Card.outlined(
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: FileImage(
+                            File('${providerR!.contactList[index].image}'),
+                          ),
+                        ),
+                        title: Text(
+                          "${providerR!.contactList[index].name}",
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        
+                      
+                        // subtitle: Text("${providerR!.contactList[index].no}"),
+                      ),
+                    ),
+                    // Divider()
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, 'contact');
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

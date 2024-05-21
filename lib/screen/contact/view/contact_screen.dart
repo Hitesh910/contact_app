@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:contact_app2/screen/contact/model/contact_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../home/provider/home_provider.dart';
 import '../provider/contact_provider.dart';
 
 class ContactScreen extends StatefulWidget {
@@ -16,6 +18,9 @@ class _ContactScreenState extends State<ContactScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   ContactProvider? providerR;
   ContactProvider? providerW;
+  TextEditingController txtName = TextEditingController();
+  TextEditingController txtNo = TextEditingController();
+  TextEditingController txtEmail = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +61,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: txtName,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text("Name"),
@@ -71,6 +77,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: txtNo,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text("Mobile"),
@@ -88,18 +95,19 @@ class _ContactScreenState extends State<ContactScreen> {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: txtEmail,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text("Email"),
                   ),
                   validator: (value) {
-                    if(value!.isNotEmpty)
-                      {
-                        if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value))
-                        {
-                          return "Invalid Email";
-                        }
+                    if (value!.isNotEmpty) {
+                      if (!RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value)) {
+                        return "Invalid Email";
                       }
+                    }
                     return null;
                   },
                 ),
@@ -107,13 +115,23 @@ class _ContactScreenState extends State<ContactScreen> {
                   height: 10,
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        Navigator.pop(context);
-                        providerR?.changeImage(null);
-                      }
-                    },
-                    child: const Text("Save"))
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+
+                      ContactModel c1 = ContactModel(
+                          image: providerR!.selectedImagePath,
+                          email: txtEmail.text,
+                          name: txtName.text,
+                          no: txtNo.text);
+
+                      context.read<HomeProvider>().addData(c1);
+                      Navigator.pop(context);
+                      providerR?.changeImage(null);
+
+                    }
+                  },
+                  child: const Text("Save"),
+                )
               ],
             ),
           ),
