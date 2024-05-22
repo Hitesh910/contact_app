@@ -61,7 +61,7 @@ class _ContactScreenState extends State<ContactScreen> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: txtName,
+                   controller: txtName,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text("Name"),

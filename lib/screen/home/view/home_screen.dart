@@ -53,6 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           "${providerR!.contactList[index].name}",
                           style: const TextStyle(fontSize: 20),
                         ),
+                        trailing: Icon(Icons.arrow_forward_ios_rounded),
+                        onTap: () {
+                          providerR!.selectedIndex = index;
+                          Navigator.pushNamed(context, 'details',arguments: providerR!.contactList[index]);
+                        },
                         
                       
                         // subtitle: Text("${providerR!.contactList[index].no}"),
