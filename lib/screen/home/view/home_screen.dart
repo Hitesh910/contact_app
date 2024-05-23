@@ -23,6 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contact App"),
+        actions: [
+          IconButton(onPressed: () {
+            Navigator.pushNamed(context, 'hide');
+          }, icon: Icon(Icons.remove_red_eye))
+        ],
       ),
       body: Column(
         children: [

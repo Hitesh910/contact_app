@@ -35,12 +35,24 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 PopupMenuItem(
                   child: const Text("Edit"),
                   onTap: () {
-                    update(context.read<HomeProvider>().selectedIndex);
+                    update();
                   },
                 ),
-                const PopupMenuItem(
-                  child: Text("Delete"),
-                )
+                PopupMenuItem(
+                  child: const Text("Delete"),
+                  onTap: () {
+                    context.read<HomeProvider>().deleteContact();
+                    Navigator.pop(context);
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text("hide"),
+                  onTap: () {
+                    // context.read<HomeProvider>().deleteContact();
+                    context.read<HomeProvider>().hideData(model!);
+                    Navigator.pop(context);
+                  },
+                ),
               ];
             },
           )
@@ -75,7 +87,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 ),
                 subtitle: Text("${model!.no}"),
                 trailing: IconButton(
-                  icon: Icon(Icons.call),
+                  icon: const Icon(Icons.call),
                   onPressed: () async {
                     await launch("tel: +91 ${model!.no}");
                     // final Uri call = Uri(scheme: 'tel',path: '+91111111');
@@ -95,23 +107,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
             const SizedBox(
               height: 10,
             ),
-            const ListTile(
-              title: Text(
+             ListTile(
+              title: const Text(
                 "Message",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               ),
-              subtitle: Text("+91858585"),
-              trailing: Icon(Icons.message),
+              subtitle: Text("${model!.no}"),
+              trailing: const Icon(Icons.message),
             ),
             const SizedBox(
               height: 10,
             ),
-            const ListTile(
+            ListTile(
               title: Text(
                 "Email",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
               ),
-              subtitle: Text("A@gmail.com"),
+              subtitle: Text("${model!.email}"),
               trailing: Icon(Icons.email),
             ),
           ],
@@ -120,7 +132,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 
-  void update(int index) {
+  void update() {
     txtName.text = model!.name!;
     txtNo.text = model!.no!;
     txtEmail.text = model!.email!;
@@ -181,11 +193,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Email is required";
-                      } else if (!RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      }
+                      else if (value!.isNotEmpty)
+                        {
+                      if (!RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value)) {
                         return "Invalid Email";
                       }
+                        }
                       return null;
                     },
                   ),
@@ -194,16 +210,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          String? name = txtName.text;
-                          String? no = txtNo.text;
-                          String? email = txtEmail.text;
+                        if (formKey.currentState!.validate())
+                        {
+                          ContactModel c1 = ContactModel(
+                              no: txtNo.text,
+                              name: txtName.text,
+                              email: txtEmail.text,
+                              image: model!.image);
 
-                          ContactModel c1 =
-                              ContactModel(no: no, name: name, email: email);
-                          context.read<HomeProvider>().contactList[context.read<HomeProvider>().selectedIndex] == c1;
+                          context.read<HomeProvider>().updateData(c1);
                           print(c1.name);
-                          // Navigator.pop(context);
+                           Navigator.pop(context);
+                           Navigator.pop(context);
                         }
                       },
                       child: const Text("Submit"))
