@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/home_provider.dart';
@@ -24,9 +25,40 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Contact App"),
         actions: [
-          IconButton(onPressed: () {
-            Navigator.pushNamed(context, 'hide');
-          }, icon: Icon(Icons.remove_red_eye))
+          IconButton(
+              onPressed: () async {
+                // LocalAuthentication auth = LocalAuthentication();
+                // bool canAuthenticateWithBiometrics =
+                //     await auth.canCheckBiometrics;
+                // bool canAuthenticate = canAuthenticateWithBiometrics;
+                //
+                // if (canAuthenticate) {
+                //   List<BiometricType> isAvailable =
+                //       await auth.getAvailableBiometrics();
+                //
+                //   if (isAvailable.isNotEmpty) {
+                //     bool didAuthenticate = await auth.authenticate(localizedReason: "Please enter password show Hidden");
+                //
+                //     if (didAuthenticate)
+                //     {
+                      Navigator.pushNamed(context, 'hide');
+                //     }
+                //     else
+                //     {
+                //       print("========3");
+                //     }
+                //   }
+                //   else
+                //   {
+                //     print("=======2");
+                //   }
+                // }
+                // else
+                // {
+                //   print("=======1");
+                // }
+              },
+              icon: Icon(Icons.remove_red_eye))
         ],
       ),
       body: Column(
@@ -61,10 +93,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         trailing: Icon(Icons.arrow_forward_ios_rounded),
                         onTap: () {
                           providerR!.selectedIndex = index;
-                          Navigator.pushNamed(context, 'details',arguments: providerR!.contactList[index]);
+                          Navigator.pushNamed(context, 'details',
+                              arguments: providerR!.contactList[index]);
+                          providerR!.isHide(true);
                         },
-                        
-                      
+
                         // subtitle: Text("${providerR!.contactList[index].no}"),
                       ),
                     ),

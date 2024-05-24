@@ -41,18 +41,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 PopupMenuItem(
                   child: const Text("Delete"),
                   onTap: () {
-                    context.read<HomeProvider>().deleteContact();
+                    context.read<HomeProvider>().isHide == true
+                        ? context.read<HomeProvider>().deleteContact()
+                        : context.read<HomeProvider>().deleteHideContact();
                     Navigator.pop(context);
                   },
                 ),
-                PopupMenuItem(
-                  child: const Text("hide"),
-                  onTap: () {
-                    // context.read<HomeProvider>().deleteContact();
-                    context.read<HomeProvider>().hideData(model!);
-                    Navigator.pop(context);
-                  },
-                ),
+                // PopupMenuItem(
+                //   child: context.read<HomeProvider>().isCheck! ?Text("hide"):Text("Unhide"),
+                //   onTap: () {
+                //     // context.read<HomeProvider>().deleteContact();
+                //     context.read<HomeProvider>().hideData(model!);
+                //     Navigator.pop(context);
+                //   },
+                //),
               ];
             },
           )
@@ -107,7 +109,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             const SizedBox(
               height: 10,
             ),
-             ListTile(
+            ListTile(
               title: const Text(
                 "Message",
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
@@ -193,15 +195,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return "Email is required";
-                      }
-                      else if (value!.isNotEmpty)
-                        {
-                      if (!RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                        return "Invalid Email";
-                      }
+                      } else if (value!.isNotEmpty) {
+                        if (!RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return "Invalid Email";
                         }
+                      }
                       return null;
                     },
                   ),
@@ -210,8 +210,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        if (formKey.currentState!.validate())
-                        {
+                        if (formKey.currentState!.validate()) {
                           ContactModel c1 = ContactModel(
                               no: txtNo.text,
                               name: txtName.text,
@@ -220,8 +219,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
                           context.read<HomeProvider>().updateData(c1);
                           print(c1.name);
-                           Navigator.pop(context);
-                           Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
                         }
                       },
                       child: const Text("Submit"))

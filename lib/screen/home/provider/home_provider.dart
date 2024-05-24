@@ -7,6 +7,7 @@ class HomeProvider with ChangeNotifier
   int selectedIndex = 0;
   List<ContactModel> contactList = [];
   List<ContactModel> hideList = [];
+  bool? isCheck;
 
 
   void addData(ContactModel contact)
@@ -31,10 +32,26 @@ class HomeProvider with ChangeNotifier
     notifyListeners();
   }
 
-  void hideData(ContactModel c1)
-  {
-     hideList.add(c1);
+  void hideData(ContactModel c1) {
+    hideList.add(c1);
     deleteContact();
+    notifyListeners();
+  }
+
+  void deleteHideContact() {
+    hideList.removeAt(selectedIndex);
+    notifyListeners();
+  }
+
+  void isHide(bool check) {
+    check = isCheck!;
+    notifyListeners();
+  }
+
+  void unhideData(ContactModel c1)
+  {
+    contactList.add(c1);
+    deleteHideContact();
     notifyListeners();
   }
 }

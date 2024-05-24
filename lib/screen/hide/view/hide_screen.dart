@@ -47,9 +47,9 @@ class _HideScreenState extends State<HideScreen> {
                           trailing: Icon(Icons.arrow_forward_ios_rounded),
                           onTap: () {
                             print(providerR!.hideList[index].no);
-                            // providerR!.selectedIndex = index;
-                            // Navigator.pushNamed(context, 'details',
-                            //     arguments: providerR!.contactList[index]);
+                            providerR!.selectedIndex = index;
+                            Navigator.pushNamed(context, 'details',
+                                arguments: providerR!.hideList[index]);
                           },
                         ),
                       ),
