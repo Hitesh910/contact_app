@@ -47,14 +47,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     Navigator.pop(context);
                   },
                 ),
-                // PopupMenuItem(
-                //   child: context.read<HomeProvider>().isCheck! ?Text("hide"):Text("Unhide"),
-                //   onTap: () {
-                //     // context.read<HomeProvider>().deleteContact();
-                //     context.read<HomeProvider>().hideData(model!);
-                //     Navigator.pop(context);
-                //   },
-                //),
+                PopupMenuItem(
+                  child: context.read<HomeProvider>().isCheck! ?Text("hide"):Text("Unhide"),
+                  onTap: () {
+                    // context.read<HomeProvider>().deleteContact();
+                    context.read<HomeProvider>().hideData(model!);
+                    Navigator.pop(context);
+                  },
+                ),
               ];
             },
           )
@@ -197,7 +197,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         return "Email is required";
                       } else if (value!.isNotEmpty) {
                         if (!RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value)) {
                           return "Invalid Email";
                         }
@@ -226,6 +226,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       child: const Text("Submit"))
                 ],
               ),
+
             ),
           ),
         );
@@ -233,3 +234,4 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 }
+

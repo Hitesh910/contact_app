@@ -8,6 +8,7 @@ class HomeProvider with ChangeNotifier
   List<ContactModel> contactList = [];
   List<ContactModel> hideList = [];
   bool? isCheck;
+  int stepIndex=0;
 
 
   void addData(ContactModel contact)
@@ -15,6 +16,7 @@ class HomeProvider with ChangeNotifier
     contactList.add(contact);
     notifyListeners();
   }
+
 
   void updateindex(int i) {
     i = selectedIndex;
@@ -54,4 +56,5 @@ class HomeProvider with ChangeNotifier
     deleteHideContact();
     notifyListeners();
   }
+
 }

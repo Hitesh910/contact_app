@@ -21,6 +21,7 @@ class _ContactScreenState extends State<ContactScreen> {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtNo = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
+  int stepIndex =0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,104 +34,117 @@ class _ContactScreenState extends State<ContactScreen> {
       body: Form(
         key: formKey,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:  EdgeInsets.all(8.0),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                (providerW!.selectedImagePath == null)
-                    ? const CircleAvatar(
-                        radius: 60,
-                      )
-                    : CircleAvatar(
-                        radius: 50,
-                        // backgroundImage: FileImage(File(providerW!.selectedImagePath)),
-                        backgroundImage: FileImage(
-                          File(providerW!.selectedImagePath!),
-                        ),
-                      ),
-                IconButton.filledTonal(
-                  onPressed: () async {
-                    ImagePicker picker = ImagePicker();
-                    XFile? xFile =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    providerR?.changeImage(xFile!.path);
-                  },
-                  icon: const Icon(Icons.camera_alt),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                   controller: txtName,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Name"),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Name is required";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: txtNo,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Mobile"),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Mobile is required";
-                    } else if (value.length != 10) {
-                      return "Invalid mobile";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  controller: txtEmail,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Email"),
-                  ),
-                  validator: (value) {
-                    if (value!.isNotEmpty) {
-                      if (!RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                        return "Invalid Email";
+            child: Stepper(
+              currentStep: stepIndex,
+              onStepContinue: () {
+                // if(providerW?.stepContact==0)
+                //   {
+                    if(providerW!.selectedImagePath!.isNotEmpty)
+                      {
+                        if(stepIndex <= 3)
+                        {
+                          stepIndex += 1;
+                        }
+                        // providerR?.nextStep();
                       }
-                    }
-                    return null;
-                  },
+                  // }
+                  // if(stepIndex<0)
+                  // {
+                  //   stepIndex += 1;
+                  // }
+                  //stepIndex++;
+              },
+              onStepCancel: () {
+                if(stepIndex > 0)
+                  {
+                    stepIndex -= 1;
+                  }
+              },
+              onStepTapped: (int index) {
+                stepIndex = index ;
+              },
+              steps: [
+                Step(
+                    title: Text("Contact photo"),
+                    content: Column(
+                      children: [
+                        (providerW!.selectedImagePath == null)
+                            ? const CircleAvatar(
+                                radius: 60,
+                              )
+                            : CircleAvatar(
+                                radius: 50,
+// backgroundImage: FileImage(File(providerW!.selectedImagePath)),
+                                backgroundImage: FileImage(
+                                  File(providerW!.selectedImagePath!),
+                                ),
+                              ),
+                        IconButton.filledTonal(
+                          onPressed: () async {
+                            ImagePicker picker = ImagePicker();
+                            XFile? xFile = await picker.pickImage(
+                                source: ImageSource.gallery);
+                            providerR?.changeImage(xFile!.path);
+                          },
+                          icon: const Icon(Icons.camera_alt),
+                        ),
+                      ],
+                    )),
+                Step(
+                  title: Text("Contact name"),
+                  content: TextFormField(
+                    controller: txtName,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Name"),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Name is required";
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
+                Step(
+                  title: Text("Contact no"),
+                  content: TextFormField(
+                    controller: txtNo,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Mobile"),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Mobile is required";
+                      } else if (value.length != 10) {
+                        return "Invalid mobile";
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-
-                      ContactModel c1 = ContactModel(
-                          image: providerR!.selectedImagePath,
-                          email: txtEmail.text,
-                          name: txtName.text,
-                          no: txtNo.text);
-
-                      context.read<HomeProvider>().addData(c1);
-                      Navigator.pop(context);
-                      providerR?.changeImage(null);
-
-                    }
-                  },
-                  child: const Text("Save"),
+                Step(
+                  title: Text("Contact email"),
+                  content: TextFormField(
+                    controller: txtEmail,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Email"),
+                    ),
+                    validator: (value) {
+                      if (value!.isNotEmpty) {
+                        if (!RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return "Invalid Email";
+                        }
+                      }
+                      return null;
+                    },
+                  ),
                 )
               ],
             ),
@@ -140,3 +154,85 @@ class _ContactScreenState extends State<ContactScreen> {
     );
   }
 }
+
+// Column(
+// children: [
+//
+// const SizedBox(
+// height: 10,
+// ),
+// TextFormField(
+// controller: txtName,
+// decoration: const InputDecoration(
+// border: OutlineInputBorder(),
+// label: Text("Name"),
+// ),
+// validator: (value) {
+// if (value!.isEmpty) {
+// return "Name is required";
+// }
+// return null;
+// },
+// ),
+// const SizedBox(
+// height: 10,
+// ),
+// TextFormField(
+// controller: txtNo,
+// decoration: const InputDecoration(
+// border: OutlineInputBorder(),
+// label: Text("Mobile"),
+// ),
+// validator: (value) {
+// if (value!.isEmpty) {
+// return "Mobile is required";
+// } else if (value.length != 10) {
+// return "Invalid mobile";
+// }
+// return null;
+// },
+// ),
+// const SizedBox(
+// height: 10,
+// ),
+// TextFormField(
+// controller: txtEmail,
+// decoration: const InputDecoration(
+// border: OutlineInputBorder(),
+// label: Text("Email"),
+// ),
+// validator: (value) {
+// if (value!.isNotEmpty) {
+// if (!RegExp(
+// r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+//     .hasMatch(value)) {
+// return "Invalid Email";
+// }
+// }
+// return null;
+// },
+// ),
+// const SizedBox(
+// height: 10,
+// ),
+// ElevatedButton(
+// onPressed: () {
+// if (formKey.currentState!.validate()) {
+//
+// ContactModel c1 = ContactModel(
+// image: providerR!.selectedImagePath,
+// email: txtEmail.text,
+// name: txtName.text,
+// no: txtNo.text);
+//
+// context.read<HomeProvider>().addData(c1);
+// Navigator.pop(context);
+// providerR?.changeImage(null);
+//
+// }
+// },
+// child: const Text("Save"),
+// )
+// ],
+// ),
+//
