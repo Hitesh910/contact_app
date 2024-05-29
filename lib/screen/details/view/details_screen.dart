@@ -48,9 +48,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   },
                 ),
                 PopupMenuItem(
-                  child: context.read<HomeProvider>().isCheck! ?Text("hide"):Text("Unhide"),
+                  child:
+                   context.read<HomeProvider>().isCheck == true ?Text("hide"):
+                  Text("Unhide"),
                   onTap: () {
-                    // context.read<HomeProvider>().deleteContact();
+                     context.read<HomeProvider>().deleteContact();
                     context.read<HomeProvider>().hideData(model!);
                     Navigator.pop(context);
                   },

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 Map<String,WidgetBuilder> app_route = {
   "/":(context)=> const HomeScreen(),
-  "contact":(context)=> const ContactScreen(),
+  "contact":(context)=> ContactScreen(),
   "details":(context)=> DetailsScreen(),
   "hide":(context)=> HideScreen(),
 };

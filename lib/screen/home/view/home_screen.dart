@@ -87,6 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.pushNamed(context, 'details',
                               arguments: providerR!.contactList[index]);
                           providerR!.isHide(true);
+                          print(providerR!.isCheck);
                         },
 
                         // subtitle: Text("${providerR!.contactList[index].no}"),

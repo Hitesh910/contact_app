@@ -21,7 +21,7 @@ class _ContactScreenState extends State<ContactScreen> {
   TextEditingController txtName = TextEditingController();
   TextEditingController txtNo = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
-  int stepIndex =0;
+  int stepIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,36 +34,59 @@ class _ContactScreenState extends State<ContactScreen> {
       body: Form(
         key: formKey,
         child: Padding(
-          padding:  EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Stepper(
-              currentStep: stepIndex,
+              currentStep: providerW!.stepContact,
               onStepContinue: () {
-                // if(providerW?.stepContact==0)
-                //   {
-                    if(providerW!.selectedImagePath!.isNotEmpty)
+                if (providerR?.stepContact == 0) {
+                  if (providerR!.selectedImagePath!.isNotEmpty) {
+                    // if(stepIndex <= 3)
+                    // {
+                    //   stepIndex += 1;
+                    // }
+                    providerR?.nextStep();
+                    print(txtName.text);
+                  }
+                } else if (providerR!.stepContact == 1) {
+                  if (txtName.text.isNotEmpty) {
+                    providerR?.nextStep();
+                  }
+                } else if (providerR!.stepContact == 2) {
+                  if (txtNo.text.isNotEmpty) {
+                    providerR?.nextStep();
+                  }
+                }
+                else if(providerR!.stepContact == 3)
+                  {
+                    if(txtEmail.text.isNotEmpty)
                       {
-                        if(stepIndex <= 3)
-                        {
-                          stepIndex += 1;
-                        }
-                        // providerR?.nextStep();
+                         providerR?.nextStep();
                       }
-                  // }
-                  // if(stepIndex<0)
-                  // {
-                  //   stepIndex += 1;
-                  // }
-                  //stepIndex++;
+                  }
+                // else if(providerR!.stepContact == 4)
+                //   {
+                //     if()
+                //   }
+                // }
+                // if(stepIndex<0)
+                // {
+                //   stepIndex += 1;
+                // }
+                //stepIndex++;
               },
               onStepCancel: () {
-                if(stepIndex > 0)
-                  {
-                    stepIndex -= 1;
-                  }
+                // if(providerR!.stepContact == 0)
+                //   {
+                providerR!.CancelStep();
+                // }
+                // if(stepIndex > 0)
+                //   {
+                //     stepIndex -= 1;
+                //   }
               },
               onStepTapped: (int index) {
-                stepIndex = index ;
+                providerR!.stepContact = index;
               },
               steps: [
                 Step(
@@ -145,7 +168,27 @@ class _ContactScreenState extends State<ContactScreen> {
                       return null;
                     },
                   ),
-                )
+                ),
+                Step(title: Text("Contact Save"), content:
+                ElevatedButton(
+                  onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          ContactModel c1 = ContactModel(
+                              image: providerR!.selectedImagePath,
+                              email: txtEmail.text,
+                              name: txtName.text,
+                              no: txtNo.text);
+
+                          context.read<HomeProvider>().addData(c1);
+                          // providerR!.stepContact==0;
+                          
+                          Navigator.pop(context);
+                          providerR?.changeImage(null);
+                          providerR!.stepContact=0;
+                        }
+                      },
+                      child: const Text("Save"),
+                    ))
               ],
             ),
           ),

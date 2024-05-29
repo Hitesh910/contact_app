@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ContactProvider with ChangeNotifier
 {
   String? selectedImagePath;
-  int stepContact =0;
+  int stepContact = 0;
 
   void changeImage(String? path)
   {
@@ -13,11 +13,20 @@ class ContactProvider with ChangeNotifier
 
   void nextStep()
   {
-    if(stepContact != 2)
+    if(stepContact < 5)
     {
-      stepContact += 1;
+      stepContact ++;
     }
     notifyListeners();
     //stepIndex++;
+  }
+
+  void CancelStep()
+  {
+    if(stepContact > 0)
+      {
+        stepContact --;
+      }
+    notifyListeners();
   }
 }

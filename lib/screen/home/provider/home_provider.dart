@@ -46,7 +46,7 @@ class HomeProvider with ChangeNotifier
   }
 
   void isHide(bool check) {
-    check = isCheck!;
+    isCheck = check;
     notifyListeners();
   }
 
