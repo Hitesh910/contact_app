@@ -94,6 +94,7 @@ class _ContactScreenState extends State<ContactScreen> {
                     content: Column(
                       children: [
                         (providerW!.selectedImagePath == null)
+
                             ? const CircleAvatar(
                                 radius: 60,
                               )

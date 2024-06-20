@@ -27,36 +27,36 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () async {
-                LocalAuthentication auth = LocalAuthentication();
-                bool canAuthenticateWithBiometrics =
-                    await auth.canCheckBiometrics;
-                bool canAuthenticate = canAuthenticateWithBiometrics;
-
-                if (canAuthenticate) {
-                  List<BiometricType> isAvailable =
-                      await auth.getAvailableBiometrics();
-
-                  if (isAvailable.isNotEmpty) {
-                    bool didAuthenticate = await auth.authenticate(localizedReason: "Please enter password show Hidden");
-
-                    if (didAuthenticate)
-                    {
+                // LocalAuthentication auth = LocalAuthentication();
+                // bool canAuthenticateWithBiometrics =
+                //     await auth.canCheckBiometrics;
+                // bool canAuthenticate = canAuthenticateWithBiometrics;
+                //
+                // if (canAuthenticate) {
+                //   List<BiometricType> isAvailable =
+                //       await auth.getAvailableBiometrics();
+                //
+                //   if (isAvailable.isNotEmpty) {
+                //     bool didAuthenticate = await auth.authenticate(localizedReason: "Please enter password show Hidden");
+                //
+                //     if (didAuthenticate)
+                //     {
                       Navigator.pushNamed(context, 'hide');
-                    }
-                    else
-                    {
-                      print("========3");
-                    }
-                  }
-                  else
-                  {
-                    print("=======2");
-                  }
-                }
-                else
-                {
-                  print("=======1");
-                }
+                //     }
+                //     else
+                //     {
+                //       print("========3");
+                //     }
+                //   }
+                //   else
+                //   {
+                //     print("=======2");
+                //   }
+                // }
+                // else
+                // {
+                //   print("=======1");
+                // }
               },
               icon: Icon(Icons.remove_red_eye))
         ],
